@@ -1,0 +1,5 @@
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\BloodTintedWounds\1.6\Assemblies\BloodTintedWounds.dll
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\BloodTintedWounds\Source\BloodTintedWounds\obj\Debug\BloodTintedWounds.csproj.AssemblyReference.cache
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\BloodTintedWounds\Source\BloodTintedWounds\obj\Debug\BloodTintedWounds.GeneratedMSBuildEditorConfig.editorconfig
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\BloodTintedWounds\Source\BloodTintedWounds\obj\Debug\BloodTintedWounds.csproj.CoreCompileInputs.cache
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\BloodTintedWounds\Source\BloodTintedWounds\obj\Debug\BloodTintedWounds.dll

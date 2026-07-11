@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+
+	<!--	Example 1: hand-drawn burn wounds for Alpha Genes' forsaken (yellow) blood.
+
+	<BloodTintedWounds.BloodWoundTexturesDef MayRequire="sarg.alphagenes">
+		<defName>DZ_Example_ForsakenBurns</defName>
+		<gene>AG_ForsakenBlood</gene>
+		<hediff>Burn</hediff>
+		<wounds>
+			<li>
+				<texture>Test/potetowound</texture>
+			</li>
+			<li>
+				<texture>Test/potetowound</texture>
+				<scale>1.2</scale>
+			</li>
+		</wounds>
+	</BloodTintedWounds.BloodWoundTexturesDef> -->
+
+	<!--
+		Example 2: replacing the generic wounds (no hediff field) for the same gene, with textures that should still be auto-tinted yellow rather than used as-is.
+
+	<BloodTintedWounds.BloodWoundTexturesDef MayRequire="sarg.alphagenes">
+		<defName>DZ_Example_ForsakenGeneric</defName>
+		<gene>AG_ForsakenBlood</gene>
+		<tintWithBloodColor>true</tintWithBloodColor>
+		<wounds>
+			<li>
+				<texture>Wounds/CustomWoundA</texture>
+			</li>
+			<li>
+				<texture>Wounds/CustomWoundB</texture>
+			</li>
+			<li>
+				<texture>Wounds/CustomWoundC</texture>
+			</li>
+		</wounds>
+	</BloodTintedWounds.BloodWoundTexturesDef>
+	-->
+
+	<!--
+		Example 3: tinting with a specific color instead of the gene's derived blood color  (customTintColor implies tinting, so tintWithBloodColor isn't needed).
+		Here we turn their burns black rather than showing yellow blood.
+
+	<BloodTintedWounds.BloodWoundTexturesDef MayRequire="sarg.alphagenes">
+		<defName>DZ_Example_ForsakenCharredBurns</defName>
+		<gene>AG_ForsakenBlood</gene>
+		<hediff>Burn</hediff>
+		<customTintColor>(35, 30, 30)</customTintColor>
+		<wounds>
+			<li>
+				<texture>Test/burntest</texture>
+			</li>
+		</wounds>
+	</BloodTintedWounds.BloodWoundTexturesDef>
+		-->
+
+</Defs>
