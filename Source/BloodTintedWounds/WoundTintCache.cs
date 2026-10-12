@@ -16,17 +16,32 @@ namespace BloodTintedWounds
         private static readonly FieldInfo BandagedWoundsResolvedField = typeof(FleshTypeDef).GetField("bandagedWoundsResolved", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo HediffWoundsResolvedField = typeof(FleshTypeDef.HediffWound).GetField("woundsResolved", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        // Everything made at startup, remembered so the settings menu can rebake in place
-        // (the defs are registered and referenced by gene extensions, so they must be reused).
-        private class WoundSet
-        {
-            public FleshTypeDef def;
-            public Color color;
-            public List<BloodWoundTexturesDef> overrides;
-        }
+        private const string TintShaderDefName = "DZ_BTW_WoundTinted";
 
-        private static readonly List<WoundSet> woundSets = new List<WoundSet>();
-        private static FleshTypeDef sourceDef;
+        private static Shader tintShader;
+
+        // Shipped in this mod's Shaders folder. It drops the wound art's own hue on the GPU,
+        // so the original textures are used as they are and nothing has to be pre-baked.
+        private static Shader TintShader
+        {
+            get
+            {
+                if (tintShader == null)
+                {
+                    ShaderDef def = DefDatabase<ShaderDef>.GetNamedSilentFail(TintShaderDefName);
+                    if (def == null)
+                    {
+                        Log.Error($"[Blood-Tinted Wounds] ShaderDef {TintShaderDefName} is missing; wounds will be tinted over their original color.");
+                        tintShader = ShaderDatabase.Wound;
+                    }
+                    else
+                    {
+                        tintShader = def.Shader;
+                    }
+                }
+                return tintShader;
+            }
+        }
 
         public static void Run()
         {
@@ -36,7 +51,7 @@ namespace BloodTintedWounds
                 return;
             }
             Dictionary<GeneDef, List<BloodWoundTexturesDef>> overridesByGene = CollectOverrides();
-            FleshTypeDef source = sourceDef = FleshTypeDefOf.Normal;
+            FleshTypeDef source = FleshTypeDefOf.Normal;
             int geneCount = 0;
             foreach (GeneDef gene in DefDatabase<GeneDef>.AllDefsListForReading)
             {
@@ -93,11 +108,10 @@ namespace BloodTintedWounds
             };
             FillResolved(def, source, color, overrides);
             DefGenerator.AddImpliedDef(def);
-            woundSets.Add(new WoundSet { def = def, color = color, overrides = overrides });
             return def;
         }
 
-        // Rebuilds a def's wound lists and pre-resolved material caches. Called at startup and again by the settings menu's cache regeneration.
+        // Builds a def's wound lists and pre-resolved material caches.
         private static void FillResolved(FleshTypeDef def, FleshTypeDef source, Color color, List<BloodWoundTexturesDef> overrides)
         {
             // A generic override (no hediff) replaces the generic wounds wholesale.
@@ -163,27 +177,6 @@ namespace BloodTintedWounds
             return custom;
         }
 
-        // Settings-menu action: wipe the disk cache and remake every generated def from the currently loaded art. Returns how many cached files were deleted.
-        public static int RegenerateAll()
-        {
-            int cleared = GrayscaleTextureCache.ClearAll();
-            foreach (WoundSet set in woundSets)
-            {
-                FillResolved(set.def, sourceDef, set.color, set.overrides);
-            }
-            if (Current.ProgramState == ProgramState.Playing)
-            {
-                foreach (Map map in Find.Maps)
-                {
-                    foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
-                    {
-                        pawn.Drawer?.renderer?.SetAllGraphicsDirty();
-                    }
-                }
-            }
-            return cleared;
-        }
-
         private static FleshTypeDef.HediffWound MakeHediffWound(HediffDef hediff, bool onlyHumanlikes, List<FleshTypeDef.Wound> wounds, Color color, bool tint)
         {
             FleshTypeDef.HediffWound result = new FleshTypeDef.HediffWound
@@ -229,17 +222,7 @@ namespace BloodTintedWounds
 
         private static Material TintedMat(string texPath, Color color)
         {
-            Texture2D source = ContentFinder<Texture2D>.Get(texPath, reportFailure: false);
-            if (source == null)
-            {
-                return MaterialPool.MatFrom(texPath, ShaderDatabase.Wound, color);
-            }
-            Texture2D grayTex = GrayscaleTextureCache.Get(texPath, source);
-            MaterialRequest req = default(MaterialRequest);
-            req.mainTex = grayTex;
-            req.shader = ShaderDatabase.Wound;
-            req.color = color;
-            return MaterialPool.MatFrom(req);
+            return MaterialPool.MatFrom(texPath, TintShader, color);
         }
     }
 }

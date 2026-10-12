@@ -1,36 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<RootNamespace>BloodTintedWounds</RootNamespace>
 		<AssemblyName>BloodTintedWounds</AssemblyName>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<Nullable>disable</Nullable>
 		<DebugType>embedded</DebugType>
 		<!-- Point these at your own installs if they live somewhere else. -->
-		<RimWorldManagedDir>E:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManagedDir>
-		<HarmonyDir>E:\SteamLibrary\steamapps\workshop\content\294100\2009463077\Current\Assemblies</HarmonyDir>
+		<RimWorldDir>E:\SteamLibrary\steamapps\common\RimWorld</RimWorldDir>
+		<!-- VEF has no 1.7 build yet; its 1.6 assembly loads through the game's compatibility layer. -->
 		<VEFDir>E:\SteamLibrary\steamapps\workshop\content\294100\2023507013\1.6\Assemblies</VEFDir>
-		<OutputPath>..\..\1.6\Assemblies\</OutputPath>
+		<OutputPath>..\..\1.7\Assemblies\</OutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Reference Include="Assembly-CSharp">
-			<HintPath>$(RimWorldManagedDir)\Assembly-CSharp.dll</HintPath>
+			<HintPath>$(RimWorldDir)\Assembly-CSharp.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-		<Reference Include="UnityEngine.CoreModule">
-			<HintPath>$(RimWorldManagedDir)\UnityEngine.CoreModule.dll</HintPath>
-			<Private>false</Private>
-		</Reference>
-		<Reference Include="UnityEngine.ImageConversionModule">
-			<HintPath>$(RimWorldManagedDir)\UnityEngine.ImageConversionModule.dll</HintPath>
-			<Private>false</Private>
-		</Reference>
-		<Reference Include="0Harmony">
-			<HintPath>$(HarmonyDir)\0Harmony.dll</HintPath>
+		<Reference Include="UnityStubs">
+			<HintPath>$(RimWorldDir)\UnityStubs.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="VEF">

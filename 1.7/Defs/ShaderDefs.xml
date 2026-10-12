@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!-- Same pipeline settings as vanilla's Wound shader; only the fragment program differs. -->
+	<ShaderDef>
+		<defName>DZ_BTW_WoundTinted</defName>
+		<shaderProgram>
+			<fragmentShaderFileName>DZ_BTW_WoundTinted.frag.glsl</fragmentShaderFileName>
+			<flipTextureST>false</flipTextureST>
+			<transparent>true</transparent>
+			<depthWrite>true</depthWrite>
+			<renderQueue>2900</renderQueue>
+			<textureWrapOverrides>
+				<li>
+					<key>_MainTex</key>
+					<value>Clamp</value>
+				</li>
+				<li>
+					<key>_MaskTex</key>
+					<value>Clamp</value>
+				</li>
+			</textureWrapOverrides>
+		</shaderProgram>
+	</ShaderDef>
+
+</Defs>
