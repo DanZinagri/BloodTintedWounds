@@ -10,6 +10,8 @@ namespace BloodTintedWounds
     // Startup-only generator. For every VEF blood-color gene it bakes a FleshTypeDef whose wound overlays are pre-tinted to the gene's blood color,
     // then writes it into the gene's customWoundsFromFleshtype slot.
     // Genes with BloodWoundTexturesDef overrides get their own def with the hand-supplied art swapped in; everyone else shares one def per color.
+    // Marked for startup because it holds a Shader, which the game wants created on the main thread.
+    [StaticConstructorOnStartup]
     public static class FleshTypeGenerator
     {
         private static readonly FieldInfo WoundsResolvedField = typeof(FleshTypeDef).GetField("woundsResolved", BindingFlags.NonPublic | BindingFlags.Instance);
